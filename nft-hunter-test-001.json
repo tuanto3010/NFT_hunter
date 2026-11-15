@@ -1,0 +1,16 @@
+{
+  "name": "NFT Hunter Test #001",
+  "symbol": "HUNTER",
+  "description": "First Solana NFT created by NFT Hunter",
+  "image": "nft-hunter-test-001.svg",
+  "attributes": [],
+  "properties": {
+    "category": "image",
+    "files": [
+      {
+        "uri": "nft-hunter-test-001.svg",
+        "type": "image/svg+xml"
+      }
+    ]
+  }
+}
