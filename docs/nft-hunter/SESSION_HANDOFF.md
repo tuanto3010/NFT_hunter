@@ -330,3 +330,12 @@ The key is configured, but this process cannot reach the feed hosts (`URLError`)
 - Browser preview was unavailable because the computer-use bridge did not initialize. The previous workspace snapshot also had no listener on 8767/8768; restart from the normal VS Code terminal and hard-refresh to see the new page. No tests were run for this visual-only update; no API, wallet, database, or transaction behavior was changed.
 - Campaign results and Discoveries now show six rows initially with a “Show more” control in six-row batches and “Show fewer” after expanding all visible results. Changing filters/search returns to the first batch.
 - Follow-up from the screenshot: fixed campaign table column widths, raised its minimum width so the table scrolls instead of overlapping, and changed Mint/Price/Risk chips to wrap. The wallet result now omits the long timestamp from inline text (full time remains in its tooltip); Updated uses a compact local date/time with the full timestamp in its tooltip.
+
+
+## Source publication — 2026-11-17
+
+- The NFT Hunter source checkpoint was published to the GitHub repository `https://github.com/tuanto3010/NFT_hunter` on branch `codex/nft-hunter-checkpoint`; the remote accepted commit `7d24c8778b796999d62d79c0d0fd0d5738e48c1c` (subject: `Add NFT Hunter source and checkpoint docs`). The branch was created from `main` at `e02ea8c7c86620e17952410b1d74188c7a2909d2`; `main` was not modified.
+- This destination is GitHub, not Gerrit, so no Gerrit `refs/for/` review change was created.
+- The published checkpoint contains application source, tests, documentation, safe `.env.example`, project configuration, and metadata fixtures. `.env`, credentials, private keys, databases, backups, logs, caches, and local tool/runtime directories were excluded.
+- Verification before publication: Python suite 237 passed; Node suite 28 passed; the OpenSea drops test module passed 15 tests after replacing an unlabeled credential-like test literal with an explicit placeholder; staged secret scan reported zero findings; `git fsck --full --no-reflogs` exited successfully.
+- GitHub branch: `https://github.com/tuanto3010/NFT_hunter/tree/codex/nft-hunter-checkpoint`.
