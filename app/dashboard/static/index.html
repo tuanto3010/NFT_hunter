@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#FBF7F2">
+  <title>NFT Hunter · Launch scout</title>
+  <link rel="stylesheet" href="/static/dashboard.css?v=campaign-row-layout-2">
+  <!-- Local @solana/web3.js 1.99.0 browser bundle; see SOLANA-WEB3-LICENSE.txt. -->
+  <script src="/static/solana-web3.min.js"></script>
+  <script type="module" src="/static/dashboard.js?v=campaign-row-layout-2"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#overview" aria-label="NFT Hunter overview">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        <span class="brand-copy"><strong>NFT Hunter</strong><small>YOUR LAUNCH SCOUT</small></span>
+      </a>
+      <p class="nav-label">YOUR SPACE</p>
+      <nav class="side-nav">
+        <a class="nav-link active" href="#overview" data-section="overview" data-page="overview"><span class="nav-icon">⌂</span>Overview</a>
+        <a class="nav-link" href="#campaigns" data-section="campaigns" data-page="campaigns"><span class="nav-icon">✦</span>Campaigns</a>
+        <a class="nav-link" href="#opportunities" data-section="opportunities" data-page="opportunities"><span class="nav-icon">◇</span>Discoveries</a>
+        <a class="nav-link" href="#watchlist" data-section="watchlist" data-page="watchlist"><span class="nav-icon">♡</span>Watchlist</a>
+        <a class="nav-link" href="#wallets" data-section="wallets" data-page="wallets"><span class="nav-icon">▣</span>Wallets</a>
+        <a class="nav-link" href="#activity" data-section="activity" data-page="activity"><span class="nav-icon">☼</span>Activity</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <span class="local-lock" aria-hidden="true">⌑</span>
+        <div><strong>Your local workspace</strong><small>Wallets stay in your control</small></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="page-header">
+        <div class="page-heading">
+          <p class="eyebrow">YOUR NFT SCOUT</p>
+          <h1>Overview</h1>
+          <p class="page-description">A calmer little home for launches, evidence and wallet readiness.</p>
+        </div>
+        <div class="header-actions">
+          <div class="system-health"><span id="scanner-indicator" class="indicator" aria-hidden="true"></span><span id="scanner-status" role="status">Checking scanner…</span></div>
+          <span class="updated-label">Updated <strong id="last-updated">Loading…</strong></span>
+          <button id="refresh-button" class="primary-button" type="button"><span aria-hidden="true">↻</span> Refresh</button>
+        </div>
+      </header>
+
+      <section id="overview" class="page-section" data-page="overview" aria-labelledby="overview-title">
+        <div class="section-title-row"><div><p class="eyebrow">A LITTLE SNAPSHOT</p><h2 id="overview-title">Your discoveries at a glance</h2></div><span class="data-origin">Fresh from this device</span></div>
+        <div class="metrics" aria-label="Discovery summary">
+          <article class="metric metric-primary"><span>Total discoveries</span><strong id="total-count">—</strong><small>Saved observations</small></article>
+          <article class="metric"><span>Upcoming</span><strong id="upcoming-count">—</strong><small id="upcoming-note">Future active or announced</small></article>
+          <article class="metric"><span>Verified opportunities</span><strong id="verified-count">—</strong><small>Deterministic checks passed</small></article>
+          <article class="metric"><span>Verified free</span><strong id="free-count">—</strong><small>Zero price evidence</small></article>
+          <article class="metric"><span>Unknown / unverified</span><strong id="unverified-count">—</strong><small>Evidence still incomplete</small></article>
+        </div>
+        <div class="budget-summary" aria-live="polite" aria-label="Shared experiment budget">
+          <div><span>Shared test budget</span><strong id="budget-state">Loading…</strong></div>
+          <div><span>Cap</span><strong id="budget-cap">—</strong></div>
+          <div><span>Confirmed spent / reserved</span><strong id="budget-committed">—</strong></div>
+          <div><span>Unresolved liabilities</span><strong id="budget-unknown">—</strong></div>
+          <small id="budget-note">Read-only accounting; not authorization to spend.</small>
+        </div>
+        <p id="new-count" class="sr-only">—</p>
+        <p id="summary-error" class="inline-error" hidden><span id="summary-error-text">Overview data is unavailable.</span> <button class="text-action" type="button" onclick="document.getElementById('refresh-button').click()">Retry</button></p>
+      </section>
+
+      <section id="campaign-scan" class="page-section campaign-scan-section" data-page="campaigns" aria-labelledby="campaign-scan-title" hidden>
+        <div class="section-title-row campaign-scan-heading"><div><p class="eyebrow">FIND SOMETHING NEW</p><h2 id="campaign-scan-title">Campaign scout</h2><p class="section-description">Checks a small set of public feeds and saves leads for a closer look. Claims stay unverified until checked.</p></div><button id="run-campaign-scan" class="primary-button scan-button" type="button"><span aria-hidden="true">✦</span>Find new campaigns</button></div>
+        <div class="campaign-job-bar"><div class="campaign-job-state"><span id="campaign-job-indicator" class="indicator" aria-hidden="true"></span><strong id="campaign-job-status" role="status">Idle</strong><small id="campaign-job-id">No campaign cycle has run yet.</small></div><div class="campaign-job-time"><span>Started</span><strong id="campaign-job-started">Not available</strong></div><div class="campaign-job-time"><span>Duration</span><strong id="campaign-job-duration">Not available</strong></div></div>
+        <div class="campaign-counts" aria-label="Campaign scan results">
+          <div><span>Leads found</span><strong id="campaign-leads-found">0</strong></div>
+          <div><span>New leads saved</span><strong id="campaign-new-leads">0</strong></div>
+          <div><span>Verified candidates</span><strong id="campaign-verified">0</strong></div>
+          <div><span>Deferred / rejected</span><strong id="campaign-deferred">0 / 0</strong></div>
+        </div>
+        <div id="campaign-job-message" class="campaign-job-message" role="status" aria-live="polite">No scan running. Starting a scan will not invoke the historical event scanner or scheduler.</div>
+        <div id="campaign-source-metrics" class="campaign-source-metrics" aria-live="polite" hidden></div>
+        <div id="campaign-source-errors" class="campaign-source-errors" hidden></div>
+      </section>
+
+      <section id="campaigns" class="page-section campaign-results-section" data-page="campaigns" aria-labelledby="campaign-results-title" hidden>
+        <div class="section-title-row"><div><p class="eyebrow">YOUR SAVED FINDS</p><h2 id="campaign-results-title">Campaigns to review</h2><p class="section-description">Free-mint claims remain unverified until contract and wallet checks pass.</p></div><span id="campaign-results-count" class="data-origin">Loading saved campaigns…</span></div>
+        <div class="campaign-filters"><label class="filter-select"><span>Network</span><select id="campaign-chain-filter"><option value="">All networks</option><option value="bnb">BNB Chain</option><option value="ethereum">Ethereum</option><option value="base">Base</option><option value="solana">Solana</option><option value="robinhood">Robinhood Chain</option></select></label><label class="filter-select"><span>Status</span><select id="campaign-status-filter"><option value="">All statuses</option><option value="VERIFIED_PREVIEWABLE">Verified previewable</option><option value="DEFERRED_MISSING_EVIDENCE">Deferred · evidence missing</option><option value="REJECTED_PAID">Rejected · paid</option><option value="REJECTED_SOLD_OUT">Rejected · sold out</option><option value="BLOCKED_HIGH_RISK">Blocked · high risk</option><option value="BLOCKED_UNSUPPORTED">Blocked · unsupported</option></select></label><button id="campaign-results-refresh" class="secondary-button" type="button">Refresh campaigns</button></div>
+        <div class="table-wrap campaign-table-wrap"><table class="campaign-table"><thead><tr><th>Project</th><th>Network</th><th>Contract &amp; source</th><th>Quick read</th><th>Wallet check</th><th>Updated</th></tr></thead><tbody id="campaign-results-body"></tbody></table></div>
+        <div class="results-more-row"><button id="campaign-results-more" class="secondary-button" type="button" hidden>Show more campaigns</button></div>
+        <p id="campaign-results-loading" class="state-panel loading-state" hidden>Loading saved campaigns…</p>
+        <div id="campaign-results-empty" class="state-panel empty-state" hidden><span class="state-symbol">◇</span><strong>No campaigns saved yet</strong><span>Try a quick scan to look for new public announcements. This list only shows real finds.</span></div>
+        <div id="campaign-results-error" class="state-panel error-panel" hidden><span class="state-symbol">!</span><strong>Couldn’t load campaign results</strong><span id="campaign-results-error-detail">Check the local dashboard connection.</span><button id="campaign-results-retry" class="secondary-button" type="button">Retry</button></div>
+      </section>
+
+      <section id="wallets" class="page-section" data-page="wallets" aria-labelledby="wallets-title" hidden>
+        <div class="section-title-row"><div><p class="eyebrow">YOUR CONNECTIONS</p><h2 id="wallets-title">Wallets</h2><p class="section-description">Connect when you need to check an address or balance. Each wallet stays separate.</p></div><span class="section-hint">You stay in control</span></div>
+        <div class="wallet-cards">
+          <article class="wallet-card wallet-metamask">
+            <div class="wallet-top"><span class="provider-mark fox-mark">M</span><div class="provider-name"><strong>MetaMask</strong><small>EVM wallet</small></div><span id="metamask-state" class="wallet-state">Not connected</span></div>
+            <p id="metamask-details" class="wallet-details">Connect to read a public address, network and native balance.</p>
+            <div class="wallet-actions"><button id="connect-metamask" class="secondary-button" type="button">Connect MetaMask</button><button id="refresh-metamask" class="icon-button" type="button" title="Refresh MetaMask" aria-label="Refresh MetaMask" disabled>↻</button></div>
+          </article>
+          <article class="wallet-card wallet-phantom">
+            <div class="wallet-top"><span class="provider-mark phantom-mark">P</span><div class="provider-name"><strong>Phantom</strong><small>Solana wallet</small></div><span id="phantom-state" class="wallet-state">Not connected</span></div>
+            <p id="phantom-details" class="wallet-details">Connect to read a Solana public key and SOL balance.</p>
+            <div class="wallet-actions"><button id="connect-phantom" class="secondary-button" type="button">Connect Phantom</button><button id="refresh-phantom" class="icon-button" type="button" title="Refresh Phantom" aria-label="Refresh Phantom" disabled>↻</button></div>
+          </article>
+          <article class="wallet-card wallet-binance">
+            <div class="wallet-top"><span class="provider-mark binance-mark">B</span><div class="provider-name"><strong>Binance Agentic</strong><small>Local CLI adapter</small></div><span id="binance-state" class="wallet-state">Not checked</span></div>
+            <p id="binance-details" class="wallet-details">Reads the existing local CLI session independently.</p>
+            <div class="wallet-actions"><button id="refresh-binance" class="secondary-button" type="button">Refresh status</button></div>
+          </article>
+        </div>
+        <p id="wallet-message" class="inline-note" role="status">Wallet selection is per opportunity. Eligibility is checked against that exact public address.</p>
+        <details class="wallet-tools"><summary>Advanced tool · make a self-owned Solana test asset</summary>
+        <article class="wallet-card core-asset-preview-card" aria-labelledby="core-asset-preview-title">
+          <div class="section-title-row"><div><p class="eyebrow">SELF-CREATED TEST ASSET · SOLANA MAINNET</p><h3 id="core-asset-preview-title">Metaplex Core preview</h3></div><span class="section-hint">Separate approval · one submission</span></div>
+          <p class="inline-note">This creates a new Core asset under your Phantom wallet. It is separate from third-party mint campaigns. Host the supplied JSON and SVG publicly over HTTPS before previewing.</p>
+          <label class="core-preview-label" for="core-metadata-uri">Public metadata JSON URL</label>
+          <input id="core-metadata-uri" class="core-preview-input" type="url" inputmode="url" autocomplete="url" placeholder="https://…/nft-hunter-test-001.json" aria-describedby="core-preview-help">
+          <p id="core-preview-help" class="inline-note">Hunter fetches the JSON and image once each, validates both, then builds and simulates an unsigned transaction.</p>
+          <label class="core-preview-confirm"><input id="core-wallet-confirm" type="checkbox"><span>I confirm the connected Phantom address shown below is the intended test wallet. Preview only; no signature or transaction will be requested.</span></label>
+          <p id="core-wallet-address" class="inline-note">Phantom mainnet wallet: unavailable</p>
+          <button id="core-asset-preview-button" class="primary-button" type="button" disabled>Build &amp; simulate preview</button>
+          <p id="core-asset-preview-status" class="preview-result" role="status">BLOCKED_METADATA_URI — Public metadata hosting is required.</p>
+          <div id="core-asset-preview-details" class="core-preview-details" hidden></div>
+          <div id="core-asset-execution" class="core-preview-details" hidden>
+            <p><strong>Live mint approval</strong> — This sends one self-created Core asset transaction on Solana mainnet. Review the transaction and cost details above. Phantom will show its signing prompt; Hunter validates the returned signatures and submits this exact transaction once. A failed/unclear submission is never retried.</p>
+            <label class="core-preview-confirm"><input id="core-transaction-confirm" type="checkbox"><span>I approve this exact asset, wallet, metadata URI, instructions, and maximum SOL cost shown above, and authorize one submission after Phantom signs.</span></label>
+            <button id="core-asset-execute-button" class="primary-button" type="button" disabled>Approve exact transaction &amp; open Phantom</button>
+            <p id="core-asset-execution-status" class="preview-result" role="status">No mint approval has been given.</p>
+          </div>
+          <div id="core-last-transaction" class="core-preview-details" hidden>
+            <p><strong>Saved Core asset transaction</strong> — checking status is read-only. Do not resubmit an uncertain transaction.</p>
+            <p id="core-last-transaction-info" class="preview-result" role="status"></p>
+            <a id="core-last-transaction-link" target="_blank" rel="noopener noreferrer" hidden>View transaction on Solana Explorer</a>
+            <button id="core-last-transaction-check" class="secondary-button" type="button">Check status on mainnet</button>
+            <p id="core-last-transaction-status" class="preview-result" role="status"></p>
+          </div>
+        </article>
+        </details>
+      </section>
+
+      <section id="opportunities" class="page-section discovery-section" data-page="opportunities" aria-labelledby="results-title" hidden>
+        <div class="section-title-row discovery-heading"><div><p class="eyebrow">ON-CHAIN NOTES</p><h2 id="results-title">NFT discoveries</h2><p class="section-description">Browse saved observations. We’ll keep unknown details clearly marked.</p></div><span id="filter-summary" class="data-origin">Saved observations</span></div>
+        <div class="filter-toolbar">
+          <label class="search-box"><span aria-hidden="true">⌕</span><input id="discovery-search" type="search" placeholder="Search projects or addresses" autocomplete="off" aria-label="Search projects or addresses"></label>
+          <label class="filter-select"><span>Network</span><select id="chain-filter"><option value="">All networks</option><option value="bnb">BNB Chain</option><option value="ethereum">Ethereum</option><option value="base">Base</option><option value="solana">Solana</option><option value="robinhood">Robinhood Chain</option></select></label>
+          <label class="filter-select"><span>Price evidence</span><select id="price-filter"><option value="">Any status</option><option value="UNKNOWN">Unknown</option><option value="CLAIMED">Unverified claim</option><option value="VERIFIED_FREE">Verified free</option><option value="VERIFIED_PAID">Verified paid</option></select></label>
+          <label class="filter-select"><span>Opportunity</span><select id="status-filter"><option value="">All statuses</option><option value="UPCOMING">Upcoming</option><option value="ANNOUNCED">Announced</option><option value="PRICE_UNKNOWN">Price unknown</option><option value="VERIFIED_FREE">Verified free</option></select></label>
+          <label class="upcoming-toggle"><input id="upcoming-filter" type="checkbox"><span>Future only</span></label>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Project</th><th>Network</th><th>Mint date &amp; time</th><th>Price</th><th>Price evidence</th><th>Infrastructure</th><th>Eligibility</th><th>Source / checked</th></tr></thead>
+            <tbody id="results-body"></tbody>
+          </table>
+        </div>
+        <p id="results-loading" class="state-panel loading-state" hidden><span class="state-symbol">◌</span>Loading saved opportunities…</p>
+        <div id="empty-state" class="state-panel empty-state" hidden><span class="state-symbol">◇</span><strong>No opportunities match yet</strong><span>No discoveries are stored in this view yet. Saved observations come from SQLite; this dashboard never invents opportunities.</span></div>
+        <div id="load-error" class="state-panel error-panel" hidden><span class="state-symbol">!</span><strong>Couldn’t load discoveries</strong><span id="load-error-detail">Check that the local dashboard server is available, then retry.</span><button class="secondary-button" type="button" onclick="document.getElementById('refresh-button').click()">Retry</button></div>
+        <p id="result-count" class="result-count"></p>
+        <div class="results-more-row"><button id="discoveries-more" class="secondary-button" type="button" hidden>Show more discoveries</button></div>
+      </section>
+
+      <section id="watchlist" class="page-section" data-page="watchlist" aria-labelledby="watchlist-title" hidden>
+        <div class="section-title-row"><div><p class="eyebrow">KEEP AN EYE ON IT</p><h2 id="watchlist-title">Your watchlist</h2><p class="section-description">Save projects to revisit. Details stay claims until checked.</p></div><button id="watchlist-refresh" class="secondary-button" type="button">Refresh list</button></div>
+        <details class="watchlist-add"><summary>Add a candidate</summary>
+          <form id="watchlist-form" class="watchlist-form">
+            <label>Project name<input name="project_name" maxlength="160" required></label>
+            <label>Mint / Candy Machine address<input name="address" minlength="32" maxlength="44" required></label>
+            <label>Address type<select name="address_type"><option value="launchpad_candidate">Unverified launchpad address</option><option value="core_candy_machine">Core Candy Machine</option><option value="token_mint">NFT mint</option><option value="collection_mint">Collection mint</option><option value="unknown">Unknown</option></select></label>
+            <label>Official website<input name="official_website" type="url" placeholder="https://…"></label>
+            <label>Official announcement<input name="announcement_url" type="url" placeholder="https://…"></label>
+            <label>Launchpad URL<input name="launchpad_url" type="url" placeholder="https://…"></label>
+            <label>Announcement date (ISO 8601 + timezone)<input name="announcement_date" placeholder="2026-12-01T12:00:00Z"></label>
+            <label>Mint date (ISO 8601 + timezone)<input name="mint_date" placeholder="2026-12-01T12:00:00Z"></label>
+            <label>Mint price claim (unverified)<input name="mint_price_claim" maxlength="80" placeholder="e.g. 0.2 SOL or unknown"></label>
+            <label>Allowlist status claim<select name="allowlist_status"><option>UNKNOWN</option><option>REQUIRED</option><option>NOT_REQUIRED</option><option>OPEN</option><option>CLOSED</option></select></label>
+            <label>Registration evidence URL<input name="source_url" type="url" required placeholder="https://source where you found it"></label>
+            <button class="primary-button" type="submit">Save candidate</button>
+          </form>
+        </details>
+        <p id="watchlist-message" class="inline-note" role="status">Candidates remain unverified until on-chain inspection and manual source review.</p>
+        <p id="watchlist-error" class="inline-error" hidden><span id="watchlist-error-text">Watchlist is unavailable.</span> <button class="text-action" type="button" onclick="document.getElementById('watchlist-refresh').click()">Retry</button></p>
+        <p id="watchlist-loading" class="state-panel" hidden>Loading watchlist…</p>
+        <div id="watchlist-items" class="watchlist-items"><div class="state-panel empty-state"><span class="state-symbol">◉</span><strong>No candidates saved</strong><span>Verified project leads will appear here after registration.</span></div></div>
+      </section>
+
+      <section id="activity" class="page-section activity-section" data-page="activity" aria-labelledby="activity-title" hidden>
+        <div class="section-title-row"><div><p class="eyebrow">HOW THINGS ARE GOING</p><h2 id="activity-title">Activity &amp; sources</h2><p class="section-description">A quiet place to check scans and connections.</p></div><span id="source-health-time" class="data-origin">Loading status…</span></div>
+        <div class="activity-summary"><div><span class="activity-dot"></span><span>Last scan</span><strong id="last-scan-activity">Loading…</strong></div><div><span>Next scheduled scan</span><strong id="next-scan">Checking…</strong></div><div><span id="scan-result">Checking last result…</span></div></div>
+        <section class="rpc-diagnostic" aria-labelledby="rpc-diagnostic-title">
+          <div class="rpc-diagnostic-head"><div><p class="eyebrow">MANUAL · READ ONLY</p><h3 id="rpc-diagnostic-title">BNB RPC connectivity</h3></div><button id="rpc-test-button" class="secondary-button" type="button">Test RPC</button></div>
+          <div class="rpc-diagnostic-grid">
+            <div><span>Configured endpoint</span><strong id="rpc-endpoint">Loading endpoint…</strong></div>
+            <div><span>Diagnostic state</span><strong id="rpc-state" class="rpc-state">Checking configuration…</strong></div>
+            <div><span>Last checked</span><strong id="rpc-checked">Not tested yet</strong></div>
+          </div>
+          <p id="rpc-error-details" class="rpc-error-details" role="status" aria-live="polite">Use Test RPC to send one read-only eth_chainId request. This does not start a scan.</p>
+        </section>
+        <div id="source-health-list" class="source-health-list" aria-live="polite"><p class="state-panel">Loading source health…</p></div>
+        <p id="source-health-error" class="inline-error" hidden>Source health is unavailable: <span id="source-health-error-text">request failed</span>. Refresh the dashboard to retry.</p>
+        <div class="notification-empty"><strong>Notification history</strong><p>The local API does not expose a notification history feed. Dashboard refreshes do not send Telegram messages.</p></div>
+      </section>
+
+      <footer class="app-footer"><span>NFT Hunter</span><span>Local dashboard · your wallets stay under your control</span></footer>
+    </main>
+  </div>
+
+  <dialog id="details-dialog" aria-labelledby="details-title">
+    <div class="dialog-head"><div><p class="eyebrow">DISCOVERY RECORD</p><h2 id="details-title">Project details</h2></div><button id="close-dialog" class="icon-button close-button" type="button" aria-label="Close details">×</button></div>
+    <div id="detail-summary" class="detail-summary"></div>
+    <p id="detail-explanation" class="detail-explanation"></p>
+    <div id="detail-source-links" class="detail-source-links"></div>
+    <section class="opportunity-wallet" aria-labelledby="opportunity-wallet-title"><h3 id="opportunity-wallet-title">Wallet for this opportunity</h3><label for="opportunity-wallet-select">Select a connected wallet on this network</label><select id="opportunity-wallet-select"><option value="">No compatible wallet connected</option></select><p id="opportunity-wallet-status" class="inline-note">Selection is local to this opportunity. Eligibility is not checked here.</p>
+      <div class="preview-controls"><div id="evm-preview-controls"><button id="meow-campaign-check-button" class="secondary-button" type="button" hidden>Verify Meow Cards conditions (read-only)</button><p id="meow-campaign-check-result" class="preview-result" role="status" hidden>No campaign check run.</p><label for="mint-function-select">Verified mint function</label><select id="mint-function-select"><option value="">No inspected function available</option></select><label for="mint-arguments">Arguments as JSON</label><input id="mint-arguments" type="text" value="{}" autocomplete="off" spellcheck="false" aria-describedby="mint-preview-help"><p id="mint-preview-help" class="inline-note">Only deterministic static ABI arguments are supported. Review the evidence; no whitelist proof is supplied automatically.</p><button id="mint-preview-button" class="primary-button" type="button" disabled>Run read-only preview</button><p id="mint-preview-result" class="preview-result" role="status">No preview run.</p></div>
+        <div id="solana-preview-controls" hidden><p class="inline-note">Solana uses its own read-only evidence path. No EVM transaction builder is used.</p><button id="solana-preview-button" class="primary-button" type="button" disabled>Inspect Solana mint evidence</button><p id="solana-preview-result" class="preview-result" role="status">No Solana preview run.</p></div></div>
+    </section>
+    <h3>Evidence</h3><pre id="detail-evidence"></pre>
+  </dialog>
+</body>
+</html>

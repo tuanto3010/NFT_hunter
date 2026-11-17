@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">NFT Hunter Test #001</title>
+  <desc id="desc">First Solana NFT created by NFT Hunter</desc>
+  <rect width="512" height="512" rx="72" fill="#FCE7F3"/>
+  <circle cx="256" cy="226" r="126" fill="#BE185D"/>
+  <path d="M177 230c16-35 43-53 79-53s63 18 79 53c-20-12-39-18-59-18h-40c-20 0-39 6-59 18Z" fill="#FFF7FB"/>
+  <circle cx="216" cy="237" r="11" fill="#831843"/><circle cx="296" cy="237" r="11" fill="#831843"/>
+  <path d="M232 274q24 20 48 0" fill="none" stroke="#FFF7FB" stroke-width="9" stroke-linecap="round"/>
+  <text x="256" y="410" text-anchor="middle" fill="#831843" font-family="Arial,sans-serif" font-size="34" font-weight="700">HUNTER #001</text>
+</svg>

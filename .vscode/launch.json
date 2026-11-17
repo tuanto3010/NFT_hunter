@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Binance NFT Hunter: read-only scan",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "app.main",
+            "args": ["--scan"],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Binance NFT Hunter: unit tests",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unittest",
+            "args": ["discover", "-s", "tests", "-v"],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Binance NFT Hunter: local dashboard",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "app.dashboard.api",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        }
+    ]
+}
